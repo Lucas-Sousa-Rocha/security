@@ -1,12 +1,137 @@
-<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #fff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            transition: box-shadow 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
+
+        button {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #4338ca;
+        }
+
+        a {
+            color: #e0e7ff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
 <body>
-<h2>Login</h2>
-<form th:action="@{/login}" method="post">
-    <input name="username" placeholder="Usuário" required/><br/>
-    <input name="password" type="password" placeholder="Senha" required/><br/>
-    <button type="submit">Entrar</button>
-</form>
-<div th:if="${param.error}"><p style="color:red;">Credenciais inválidas</p></div>
-<div th:if="${param.logout}"><p style="color:green;">Logout com sucesso</p></div>
-<a th:href="@{/register}">Cadastre-se</a>
-</body></html>
+
+<div class="card">
+    <h2>Login</h2>
+
+    <form th:action="@{/login}" method="post">
+        <input name="username" placeholder="Usuário" required />
+        <input name="password" type="password" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+    </form>
+
+    <div class="message error" th:if="${param.error}">
+        <p>Credenciais inválidas</p>
+    </div>
+
+    <div class="message success" th:if="${param.logout}">
+        <p>Logout com sucesso</p>
+    </div>
+
+    <a th:href="@{/register}">Cadastre-se</a>
+</div>
+
+</body>
+</html>

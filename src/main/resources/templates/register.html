@@ -1,12 +1,124 @@
-<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org">
-<body>
-<h2>Cadastro</h2>
-<form th:action="@{/register}" th:object="${user}" method="post">
-    <input type="text" th:field="*{username}" placeholder="Usuário" />
-    <input type="password" th:field="*{password}" placeholder="Senha" />
-    <button type="submit">Cadastrar</button>
-</form>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<div th:if="${error}"><p style="color:red;" th:text="${error}"></p></div>
-<a th:href="@{/login}">Voltar ao login</a>
-</body></html>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #fff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            transition: box-shadow 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
+
+        button {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #4338ca;
+        }
+
+        a {
+            color: #e0e7ff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Cadastro de Usuário</h2>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <input type="text" th:field="*{username}" placeholder="Usuário" required />
+        <input type="password" th:field="*{password}" placeholder="Senha" required />
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <div class="error-message" th:if="${error}" th:text="${error}"></div>
+
+    <a th:href="@{/login}">Voltar ao login</a>
+</div>
+
+</body>
+</html>

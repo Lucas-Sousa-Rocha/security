@@ -1,7 +1,7 @@
 package com.lucas_sousa_rocha.security.config;
 
 
-import com.lucas_sousa_rocha.security.service.CustomUserDetailsService;
+import com.lucas_sousa_rocha.security.service.UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,11 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService,
-                          PasswordEncoder passwordEncoder) {
+
+    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                .authenticationProvider(daoAuthenticationProvider()); // ✅ ADICIONE ISSO
+                .authenticationProvider(daoAuthenticationProvider());
 
         return http.build();
     }
@@ -50,14 +50,24 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService); // ✅ Necessário
+        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
 
+
+    /*@Bean
+    public AuthenticationProvider daoAuthenticationProvider() {
+        return new DaoAuthenticationProvider(userDetailsService,passwordEncoder);
+    }*/
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
-        return authConfig.getAuthenticationManager();
+        return config.getAuthenticationManager();
     }
+
+
+
 }
+

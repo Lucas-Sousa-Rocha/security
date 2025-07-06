@@ -1,7 +1,84 @@
-<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org">
-<body>
-<!--<h2>Bem-vindo, <span th:text="${username}">usuário</span>!</h2> -->
-<h1 th:text="'Bem-vindo, ' + ${username} + '!'">Bem-vindo!</h1>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<a th:href="@{/logout}">Logout</a>
-</body></html>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #4f46e5, #6d28d9);
+            padding: 15px 30px;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar .username {
+            font-weight: bold;
+        }
+
+        .navbar a {
+            background-color: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .navbar a:hover {
+            background-color: #dc2626;
+        }
+
+        .content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .content h2 {
+            font-size: 2rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra superior -->
+<div class="navbar">
+    <h1>Meu Sistema</h1>
+    <div class="user-info">
+        <span class="username" th:text="${username}">Usuário</span>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</div>
+
+<!-- Conteúdo principal -->
+<div class="content">
+    <h2 th:text="'Bem-vindo, ' + ${username} + '!'">Bem-vindo!</h2>
+</div>
+
+</body>
+</html>

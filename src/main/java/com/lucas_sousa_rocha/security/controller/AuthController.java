@@ -39,19 +39,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public String processRegister(@ModelAttribute("user") RegisterRequest userForm, Model model) {
-        if (userRepo.count() > 0 && userRepo.count() >= 1 /* opcional: permitir apenas 1 registro*/) {
-            model.addAttribute("error");
-            return "register";
-        }
         if (userRepo.findByUsername(userForm.getUsername()).isPresent()) {
-            model.addAttribute("error");
+            model.addAttribute("error", "Usuário já cadastrado !!");
             return "register";
-        }
-
+        } else {
         User user = new User();
         user.setUsername(userForm.getUsername());
         user.setPassword(encoder.encode(userForm.getPassword()));
+        user.setRole("USER");
         userRepo.save(user);
         return "redirect:/login?registered";
+        }
     }
 }
