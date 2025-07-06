@@ -1,0 +1,12 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h2>Login</h2>
+<form th:action="@{/login}" method="post">
+    <input name="username" placeholder="Usuário" required/><br/>
+    <input name="password" type="password" placeholder="Senha" required/><br/>
+    <button type="submit">Entrar</button>
+</form>
+<div th:if="${param.error}"><p style="color:red;">Credenciais inválidas</p></div>
+<div th:if="${param.logout}"><p style="color:green;">Logout com sucesso</p></div>
+<a th:href="@{/register}">Cadastre-se</a>
+</body></html>

@@ -1,0 +1,7 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--<h2>Bem-vindo, <span th:text="${username}">usuário</span>!</h2> -->
+<h1 th:text="'Bem-vindo, ' + ${username} + '!'">Bem-vindo!</h1>
+
+<a th:href="@{/logout}">Logout</a>
+</body></html>
