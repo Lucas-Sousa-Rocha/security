@@ -5,6 +5,7 @@ import com.lucas_sousa_rocha.security.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
@@ -19,4 +20,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
+
+
 }

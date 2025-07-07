@@ -13,9 +13,6 @@ import java.security.Principal;
 @Controller
 public class HomeController {
 
-    @Autowired
-    UserRepository userRepository;
-
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
         model.addAttribute("username", principal.getName());

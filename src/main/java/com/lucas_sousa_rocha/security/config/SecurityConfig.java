@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/h2-console/**").permitAll()
+                        .requestMatchers("/login", "/register", "/h2-console/**", "forgot-password", "reset-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -111,6 +111,7 @@
 
     <form th:action="@{/register}" th:object="${user}" method="post">
         <input type="text" th:field="*{username}" placeholder="Usuário" required />
+        <input type="email" th:field="*{email}" placeholder="E-mail" required />
         <input type="password" th:field="*{password}" placeholder="Senha" required />
         <button type="submit">Cadastrar</button>
     </form>

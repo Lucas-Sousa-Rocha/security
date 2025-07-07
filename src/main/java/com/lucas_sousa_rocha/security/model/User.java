@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,6 +18,15 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String role = "USER";
+
+    @Column(name = "token")
+    private String passwordResetToken;
+
+    private LocalDateTime tokenExpiry;
+
+    private String email;
+
+    private LocalDateTime inclusion_date;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -62,5 +72,37 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public LocalDateTime getTokenExpiry() {
+        return tokenExpiry;
+    }
+
+    public void setTokenExpiry(LocalDateTime tokenExpiry) {
+        this.tokenExpiry = tokenExpiry;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public LocalDateTime getInclusion_date() {
+        return inclusion_date;
+    }
+
+    public void setInclusion_date(LocalDateTime inclusion_date) {
+        this.inclusion_date = inclusion_date;
     }
 }
