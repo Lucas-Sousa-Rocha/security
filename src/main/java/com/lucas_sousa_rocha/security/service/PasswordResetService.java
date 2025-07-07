@@ -2,6 +2,7 @@ package com.lucas_sousa_rocha.security.service;
 
 import com.lucas_sousa_rocha.security.model.User;
 import com.lucas_sousa_rocha.security.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public class PasswordResetService {
+
+    @Value("${spring.mail.username}")
+    private String username;
 
     private final UserRepository userRepository;
 
@@ -46,7 +50,7 @@ public class PasswordResetService {
             emailMessage.setTo(email);
             emailMessage.setSubject("Redefinição de Senha");
             emailMessage.setText(message);
-            emailMessage.setFrom("kukutix2@gmail.com"); // ✅ adicione explicitamente
+            emailMessage.setFrom(username); // ✅ adicione explicitamente
 
             // Envia o e-mail
             mailSender.send(emailMessage);
