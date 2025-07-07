@@ -55,19 +55,11 @@ public class SecurityConfig {
         return provider;
     }
 
-
-    /*@Bean
-    public AuthenticationProvider daoAuthenticationProvider() {
-        return new DaoAuthenticationProvider(userDetailsService,passwordEncoder);
-    }*/
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
     }
-
-
 
 }
 

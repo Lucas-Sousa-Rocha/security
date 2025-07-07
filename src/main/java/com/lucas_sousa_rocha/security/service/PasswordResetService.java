@@ -2,11 +2,10 @@ package com.lucas_sousa_rocha.security.service;
 
 import com.lucas_sousa_rocha.security.model.User;
 import com.lucas_sousa_rocha.security.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,9 +14,10 @@ import java.util.UUID;
 public class PasswordResetService {
 
     private final UserRepository userRepository;
+
     private final JavaMailSender mailSender;
 
-    @Autowired
+
     public PasswordResetService(UserRepository userRepository, JavaMailSender mailSender) {
         this.userRepository = userRepository;
         this.mailSender = mailSender;
