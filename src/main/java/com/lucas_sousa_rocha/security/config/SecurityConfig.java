@@ -12,6 +12,25 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * SecurityConfig is a Spring configuration class responsible for defining the security
+ * configuration and authentication mechanisms for the application.
+ *
+ * This class integrates with Spring Security to define security constraints and manage user authentication
+ * and authorization within the application. It provides the following key features:
+ *
+ * - Configures a {@link SecurityFilterChain} that specifies the security rules for incoming HTTP requests,
+ *   including endpoints that are public and those that require authentication.
+ * - Sets up a {@link DaoAuthenticationProvider} to handle authentication using a custom {@link UserDetailsService}
+ *   and a {@link PasswordEncoder}.
+ * - Provides an {@link AuthenticationManager} bean that is required to handle authentication requests.
+ *
+ * The configuration disables certain security measures for specific scenarios, such as CSRF protection and
+ * X-Frame-Options headers, especially for development purposes or use with H2 console.
+ *
+ * This class also defines custom login and logout behavior, such as specifying custom login pages
+ * and post-logout redirection URLs.
+ */
 @Configuration
 public class SecurityConfig {
 
@@ -62,4 +81,3 @@ public class SecurityConfig {
     }
 
 }
-
