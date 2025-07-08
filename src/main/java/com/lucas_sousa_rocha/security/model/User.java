@@ -15,6 +15,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String username;
     private String password;
     private String role = "USER";
@@ -24,6 +25,7 @@ public class User implements UserDetails {
 
     private LocalDateTime tokenExpiry;
 
+    @Column(unique = true)
     private String email;
 
     private LocalDateTime inclusion_date;

@@ -1,22 +1,16 @@
 package com.lucas_sousa_rocha.security.controller;
 
-//import ch.qos.logback.core.model.Model;
-import com.lucas_sousa_rocha.security.service.UserDetailsService;
+
 import org.springframework.ui.Model;
 import com.lucas_sousa_rocha.security.dto.RegisterRequest;
 import com.lucas_sousa_rocha.security.model.User;
 import com.lucas_sousa_rocha.security.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 
 @Controller
@@ -44,20 +38,21 @@ public class AuthController {
 
     @PostMapping("/register")
     public String processRegister(@ModelAttribute("user") RegisterRequest userForm, Model model) {
-        if (userRepo.findByUsername(userForm.getUsername()).isPresent()) {
-            model.addAttribute("error", "Usuário já cadastrado !!");
-            return "register";
-        } else {
-        User user = new User();
-        user.setUsername(userForm.getUsername());
-        user.setPassword(encoder.encode(userForm.getPassword()));
-        user.setRole("USER");
-        user.setEmail(userForm.getEmail());
-        user.setInclusion_date(LocalDateTime.now());
-        userRepo.save(user);
-        return "redirect:/login?registered";
+            if (userRepo.findByUsername(userForm.getUsername()).isPresent()) {
+                model.addAttribute("error", "Nome de usuário já está em uso.");
+                return "register";
+            }
+            if (userRepo.findByEmail(userForm.getEmail()).isPresent()) {
+                model.addAttribute("error", "E-mail já está cadastrado.");
+                return "register";
+            } else {
+            User user = new User();
+            user.setUsername(userForm.getUsername());
+            user.setPassword(encoder.encode(userForm.getPassword()));
+            user.setRole("USER");
+            user.setEmail(userForm.getEmail());
+            user.setInclusion_date(LocalDateTime.now());
+            userRepo.save(user);
+            return "redirect:/login?registered";}
         }
     }
-
-
-}
