@@ -75,21 +75,5 @@ public class PasswordResetController {
         return "redirect:/login?resetSuccess";}
     }
 
-    /*@PostMapping("/reset-password")
-    public String processResetPassword(@RequestParam("token") String token, @RequestParam("password") String password,Model model) {
-        Optional<User> userOptional = userRepository.findByPasswordResetToken(token);
-        if (userOptional.isEmpty() || userOptional.get().getTokenExpiry().isBefore(LocalDateTime.now())) {
-            model.addAttribute("error", "Token inválido ou expirado");
-            return "reset-password";}
-        User user = userOptional.get();
-        user.setPassword(new BCryptPasswordEncoder().encode(password));
-        user.setPasswordResetToken(null);
-        user.setTokenExpiry(null);
-        userRepository.save(user);
-        return "redirect:/login?resetSuccess";
-    }*/
-
-
-
 }
 

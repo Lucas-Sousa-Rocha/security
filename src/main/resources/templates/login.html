@@ -128,8 +128,16 @@
         <button type="submit">Entrar</button>
     </form>
 
+    <!--
     <div class="error-message" th:if="${param.error}">Credenciais inválidas</div>
     <div class="success-message" th:if="${param.logout}">Logout realizado com sucesso</div>
+    -->
+    <!-- Adicione no seu template login.html onde desejar mostrar as mensagens -->
+    <div class="error-message" th:if="${errorMessage}"  th:text="${errorMessage}"></div>
+    <div class="success-message" th:if="${logoutMessage}"  th:text="${logoutMessage}"></div>
+    <div class="error-message" th:if="${unauthorizedMessage}" th:text="${unauthorizedMessage}"></div>
+
+    <!-- Resto do formulário de login... -->
 
     <div class="links-container">
         <div><a th:href="@{/forgot-password}">Esqueci minha senha</a></div>

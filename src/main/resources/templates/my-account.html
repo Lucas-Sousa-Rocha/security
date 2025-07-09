@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Minha Conta</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #4f46e5, #6d28d9);
+            padding: 15px 30px;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar .username {
+            font-weight: bold;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .navbar a:hover {
+            opacity: 0.8;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .content h2 {
+            margin-top: 0;
+            color: #4f46e5;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #4f46e5;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .form-control:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #4f46e5, #6d28d9);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4338ca, #5b21b6);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-back:hover {
+            color: #4f46e5;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            color: #e53e3e;
+            border: 1px solid #f9bdbb;
+        }
+
+        .read-only-field {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra superior -->
+<div class="navbar">
+    <h1>Meu Sistema</h1>
+    <div class="user-info">
+        <div>
+            <a th:href="@{/home}">Voltar para Home</a>
+        </div>
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer;">Logout</button>
+        </form>
+    </div>
+</div>
+
+<!-- Conteúdo principal -->
+<div class="content">
+    <h2>Minha Conta</h2>
+
+    <!-- Mensagem de sucesso -->
+
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="alert alert-error" th:if="${errorMenssage}" th:text="${errorMenssage}"></div>
+
+    <form th:action="@{/update-account}" th:object="${user}" method="post">
+
+        <div class="form-group">
+            <label for="username">Nome de Usuário</label>
+            <input type="text" class="form-control read-only-field" id="username" th:field="*{username}" readonly>
+            <small>O nome de usuário não pode ser alterado.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="role">Perfil</label>
+            <input type="text" class="form-control read-only-field" id="role" th:field="*{role}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="inclusion_date">Data de Cadastro</label>
+            <input type="text" class="form-control read-only-field" id="inclusion_date"
+                   th:value="${#temporals.format(user.inclusion_date, 'dd/MM/yyyy')}" readonly>
+        </div>
+
+        <div class="actions">
+            <a th:href="@{/home}" class="btn-back">← Voltar para Home</a>
+            <button type="submit" class="btn-primary">Salvar Alterações</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
