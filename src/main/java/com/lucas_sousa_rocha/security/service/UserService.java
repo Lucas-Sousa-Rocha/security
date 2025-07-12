@@ -56,12 +56,12 @@ private final PasswordEncoder encoder;
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             redirectAttributes.addFlashAttribute("errorMenssage", "Email já estar em uso!");
             return "redirect:/my-account";
-        } else {
+        }
             existingUser.setEmail(user.getEmail());
             userRepository.save(existingUser);
             redirectAttributes.addFlashAttribute("successMessage", "Dados atualizados com sucesso!");
             return "redirect:/my-account";
-        }
+
     }
     }
 

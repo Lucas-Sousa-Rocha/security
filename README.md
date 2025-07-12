@@ -12,7 +12,7 @@ Este projeto implementa um sistema completo de autenticação e segurança utili
 
 ## Tecnologias Utilizadas
 
-- Java 17
+- Java 17 LTS
 - Spring Boot 3.5.3
 - Spring Security
 - Spring Data JPA
@@ -25,9 +25,11 @@ Este projeto implementa um sistema completo de autenticação e segurança utili
 - Autenticação de usuários
 - Autorização baseada em roles
 - Cadastro de usuários
-- Recuperação de senha
+- Recuperação de senha via e-mail
 - Proteção contra ataques comuns (CSRF, XSS, etc.)
 - Interface web com Thymeleaf
+- Mensagens de erro personalizadas
+- Conta de usuário
 
 ## Pré-requisitos
 
@@ -49,7 +51,7 @@ Este projeto implementa um sistema completo de autenticação e segurança utili
    ./mvnw spring-boot:run
    ```
 
-4. Acesse a aplicação em [http://localhost:8080](http://localhost:8080)
+4. Acesse a aplicação em [http://localhost:8080/login](http://localhost:8080)
 
 ## Configuração do Banco de Dados
 
@@ -57,8 +59,32 @@ O projeto suporta vários bancos de dados. Para configurar, edite o arquivo de p
 
 ### PostgreSQL
 ```
-properties spring.datasource.url=jdbc:postgresql://localhost:5432/security spring.datasource.username=seu_usuario spring.datasource.password=sua_senha spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.datasource.url=jdbc:postgresql://localhost:5432/Security
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.username=USUARIO
+spring.datasource.password=SENHA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ``` 
+
+## Configurando o E-mail
+
+```
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=${EMAIL_USERNAME}
+spring.mail.password=${EMAIL_PASS}
+spring.mail.properties.mail.smtp.starttls.required=true
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=5000
+spring.mail.properties.mail.smtp.writetimeout=5000
+``` 
+
+- Substitua `${EMAIL_USERNAME}` e `${EMAIL_PASS}` pelos dados do seu e-mail.
+- Substitua `smtp.gmail.com` pelo servidor SMTP do seu e-mail.
+- Verifique se seu email estar habilitado para envio de e-mails.
+- Caso use o gmail utilize a opção de senha de aplicativo.
 
 ## Estrutura do Projeto
 ```
@@ -68,17 +94,19 @@ properties spring.datasource.url=jdbc:postgresql://localhost:5432/security sprin
 │   │   │   └── com/lucas_sousa_rocha/security/
 │   │   │       ├── config/                      # Configurações do Spring e Security
 │   │   │       ├── controller/                  # Controladores MVC
+│   │   │       ├── dto/                         # Objetos de transferência de dados (DTOs)
 │   │   │       ├── model/                       # Entidades JPA
 │   │   │       ├── repository/                  # Repositórios Spring Data
 │   │   │       ├── service/                     # Serviços de negócio
-│   │   │       └── util/                        # Classes utilitárias
 │   │   └── resources/
 │   │       ├── static/                          # Recursos estáticos (CSS, JS, etc.)
 │   │       ├── templates/                       # Templates Thymeleaf
 │   │       └── application.properties           # Configurações da aplicação
 │
 ├── test/                                        # Testes unitários e de integração
-└── pom.xml                                      # Configuração do Maven
+└── pom.xml
+
+
 ``` 
 
 ## Capturas de Tela
@@ -92,11 +120,14 @@ properties spring.datasource.url=jdbc:postgresql://localhost:5432/security sprin
 - http://localhost:8080/security/forgot-password
 ![Esqueci Minha Senha](src/main/resources/templates/img/fogot-password.png)
 
-- http://localhost:8080/security/reset-password?token=TOKEN ENVIADO PARA O EMAIL
+- http://localhost:8080/security/reset-password?token= TOKEN ENVIADO PARA O EMAIL
 ![Página Home](src/main/resources/templates/img/reset-password.png)
 
 - http://localhost:8080/security/home
 ![Página Home](src/main/resources/templates/img/home.png)
+
+- http://localhost:8080/security/my-account
+  ![Página Home](src/main/resources/templates/img/my-account.png)
 
 ## Desenvolvimento
 
@@ -107,13 +138,6 @@ Para contribuir com o projeto:
 3. Faça commit das alterações (`git commit -m 'Adiciona nova funcionalidade'`)
 4. Envie para o GitHub (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
-
-## Testes
-
-Execute os testes com o comando:
-```
-bash ./mvnw test
-``` 
 
 ### Implantação 
 
