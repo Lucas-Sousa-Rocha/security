@@ -1,7 +1,5 @@
 package com.lucas_sousa_rocha.security.dto;
 
-import java.time.LocalDateTime;
-
 public class RegisterRequest {
     private String username;
     private String password;

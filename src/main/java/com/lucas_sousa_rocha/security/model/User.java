@@ -18,7 +18,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     private String password;
-    private String role = "USER";
+    private String role;
 
     @Column(name = "token")
     private String passwordResetToken;

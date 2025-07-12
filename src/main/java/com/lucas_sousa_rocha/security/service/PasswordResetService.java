@@ -2,62 +2,64 @@ package com.lucas_sousa_rocha.security.service;
 
 import com.lucas_sousa_rocha.security.model.User;
 import com.lucas_sousa_rocha.security.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class PasswordResetService {
 
-    @Value("${spring.mail.username}")
-    private String username;
-
     private final UserRepository userRepository;
 
-    private final JavaMailSender mailSender;
+    private final PasswordEncoder encoder;
 
+    private final EmailService emailService;
 
-    public PasswordResetService(UserRepository userRepository, JavaMailSender mailSender) {
+    public PasswordResetService(UserRepository userRepository, PasswordEncoder encoder, EmailService emailService) {
         this.userRepository = userRepository;
-        this.mailSender = mailSender;
+        this.encoder = encoder;
+        this.emailService = emailService;
     }
 
-    public boolean sendPasswordResetEmail(String email, String appUrl) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+    public String processResetPasswordService(String token, String password, Model model) {
+        Optional<User> userOptional = userRepository.findByPasswordResetToken(token);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            // Gera um token único e define o prazo de expiração
-            String token = UUID.randomUUID().toString();
-            user.setPasswordResetToken(token);
-            user.setTokenExpiry(LocalDateTime.now().plusHours(1));
-            userRepository.save(user);
-
-            // Constrói o link para redefinição de senha
-            String resetUrl = appUrl + "/reset-password?token=" + token;
-            String message = "Olá, " + user.getUsername() + "!\n\n" +
-                    "Clique no link abaixo para redefinir sua senha. Ele expirará em 1 hora:\n\n" +
-                    resetUrl + "\n\nSe você não solicitou, ignore este e-mail.";
-
-            // Monta o e-mail
-            SimpleMailMessage emailMessage = new SimpleMailMessage();
-            emailMessage.setTo(email);
-            emailMessage.setSubject("Redefinição de Senha");
-            emailMessage.setText(message);
-            emailMessage.setFrom(username); // ✅ adicione explicitamente
-
-            // Envia o e-mail
-            mailSender.send(emailMessage);
-
-            return true;
+        // ✅ Verifica se o usuário existe
+        if (userOptional.isEmpty()) {
+            model.addAttribute("error", "Token inválido ou expirado");
+            return "reset-password";
         }
-
-        return false; // Se não encontrou o e-mail
+        User user = userOptional.get();
+        // ✅ Verifica se o token está nulo ou expirado
+        if (user.getPasswordResetToken() == null || user.getTokenExpiry().isBefore(LocalDateTime.now())) {
+            model.addAttribute("error", "Token inválido ou expirado");
+            return "reset-password";
+        } else {
+        // ✅ Atualiza a senha e remove o token
+        user.setPassword(encoder.encode(password));
+        user.setPasswordResetToken(null);
+        user.setTokenExpiry(null);
+        userRepository.save(user);
+        System.out.println("Usuário " + user.getUsername());
+        return "redirect:/login?resetSuccess";
+        }
     }
+
+
+    public String processForgotPasswordService(String email, Model model, HttpServletRequest request) {
+        String appUrl = request.getRequestURL().toString().replace(request.getServletPath(), "");
+        boolean enviado = emailService.sendPasswordResetEmail(email, appUrl);
+        if (enviado) {
+            model.addAttribute("mensagem", "Verifique seu e-mail para redefinir a senha.");
+            System.out.println("Enviado para redefinir a senha");
+        } else {
+            System.out.println("Não enviado");
+            model.addAttribute("erro", "E-mail não encontrado.");
+        }
+        return "forgot-password";
+    }
+
 }
