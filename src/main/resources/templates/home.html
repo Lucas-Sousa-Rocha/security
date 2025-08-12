@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         * {
             box-sizing: border-box;
@@ -36,21 +38,9 @@
             gap: 20px;
         }
 
-        .navbar .username {
-            font-weight: bold;
-        }
-
         .navbar a {
-            background-color: #ef4444;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
             text-decoration: none;
             transition: background-color 0.3s ease-in-out;
-        }
-
-        .navbar a:hover {
-            background-color: #dc2626;
         }
 
         .content {
@@ -62,15 +52,7 @@
             font-size: 2rem;
             font-weight: 500;
         }
-        .logout-button {
-            background: none;
-            border: none;
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-            padding: 0;
-            font: inherit;
-        }
+
         .btn-logout {
             background: linear-gradient(135deg, #ff4b2b, #ff416c);
             border: none;
@@ -93,6 +75,7 @@
         .btn-logout:active {
             transform: scale(0.98);
         }
+
         .btn-account {
             display: inline-block;
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -116,7 +99,16 @@
             transform: scale(0.97);
         }
 
+        .btn-gear {
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
 
+        .btn-gear:hover {
+            transform: rotate(90deg);
+            color: #cbd5e1;
+        }
     </style>
 </head>
 <body>
@@ -125,11 +117,16 @@
 <div class="navbar">
     <h1>Meu Sistema</h1>
     <div class="user-info">
-        <div>
-            <a th:href="@{/my-account}" class="btn-account">Minha Conta 🙋‍♂️</a>
-        </div>
 
-        <!-- Substituindo o link por um formulário POST -->
+        <!-- Ícone de engrenagem -->
+        <a th:href="@{/config-email}" title="Configuração de E-mail" class="btn-gear">
+            <i class="fas fa-cog"></i>
+        </a>
+
+        <!-- Link Minha Conta -->
+        <a th:href="@{/my-account}" class="btn-account">Minha Conta 🙋‍♂️</a>
+
+        <!-- Logout -->
         <form th:action="@{/logout}" method="post" style="display: inline;">
             <button type="submit" class="btn-logout">Logout</button>
         </form>
@@ -142,5 +139,4 @@
 </div>
 
 </body>
-
 </html>

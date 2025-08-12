@@ -36,18 +36,36 @@
             gap: 20px;
         }
 
-        .navbar .username {
-            font-weight: bold;
-        }
-
-        .navbar a {
+        .navbar .user-info a {
             color: white;
             text-decoration: none;
             transition: opacity 0.3s ease-in-out;
         }
 
-        .navbar a:hover {
+        .navbar .user-info a:hover {
             opacity: 0.8;
+        }
+
+        /* Botão logout estilizado igual à home */
+        form button {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            opacity: 0.9;
+        }
+        form button:active {
+            transform: scale(0.98);
         }
 
         .content {
@@ -94,9 +112,11 @@
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
         }
 
-        .form-control:disabled {
+        .form-control:disabled,
+        .read-only-field {
             background-color: #f3f4f6;
             cursor: not-allowed;
+            color: #6b7280;
         }
 
         .btn-primary {
@@ -154,11 +174,6 @@
             border: 1px solid #f9bdbb;
         }
 
-        .read-only-field {
-            background-color: #f9fafb;
-            color: #6b7280;
-        }
-
         .actions {
             display: flex;
             justify-content: space-between;
@@ -177,7 +192,7 @@
             <a th:href="@{/home}">Voltar para Home</a>
         </div>
         <form th:action="@{/logout}" method="post" style="display: inline;">
-            <button type="submit" style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer;">Logout</button>
+            <button type="submit">Logout</button>
         </form>
     </div>
 </div>
@@ -186,10 +201,9 @@
 <div class="content">
     <h2>Minha Conta</h2>
 
-    <!-- Mensagem de sucesso -->
-
+    <!-- Mensagens de sucesso e erro -->
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
-    <div class="alert alert-error" th:if="${errorMenssage}" th:text="${errorMenssage}"></div>
+    <div class="alert alert-error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
     <form th:action="@{/update-account}" th:object="${user}" method="post">
 
