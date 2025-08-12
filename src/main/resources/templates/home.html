@@ -103,11 +103,69 @@
             font-size: 1.5rem;
             color: white;
             transition: transform 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            position: relative;
         }
 
         .btn-gear:hover {
-            transform: rotate(90deg);
             color: #cbd5e1;
+        }
+
+        .btn-gear.active {
+            transform: rotate(90deg);
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f5f9;
+        }
+
+        .dropdown-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 0;
+        }
+
+        /* Adicionar estilo para usuários administradores */
+        .admin-item {
+            background-color: #f8fafc;
         }
     </style>
 </head>
@@ -118,16 +176,37 @@
     <h1>Meu Sistema</h1>
     <div class="user-info">
 
-        <!-- Ícone de engrenagem -->
-        <a th:href="@{/config-email}" title="Configuração de E-mail" class="btn-gear">
-            <i class="fas fa-cog"></i>
-        </a>
+        <!-- Ícone de engrenagem com dropdown -->
+        <div class="dropdown">
+            <div class="btn-gear" id="configBtn">
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="dropdown-content" id="configDropdown">
+                <a th:href="@{/config-email}">
+                    <i class="fas fa-envelope"></i> Configuração de E-mail
+                </a>
+                <div class="dropdown-divider"></div>
+                <a th:href="@{/my-account}">
+                    <i class="fas fa-user-circle"></i> Minha Conta
+                </a>
+                <div class="dropdown-divider"></div>
+                <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                   th:href="@{/reports/users}"
+                   class="admin-item">
+                    <i class="fas fa-file-alt"></i> Relatório de Usuários
+                </a>
+                <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="dropdown-divider"></div>
+                <a href="#" onclick="document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </a>
+            </div>
+        </div>
 
         <!-- Link Minha Conta -->
         <a th:href="@{/my-account}" class="btn-account">Minha Conta 🙋‍♂️</a>
 
         <!-- Logout -->
-        <form th:action="@{/logout}" method="post" style="display: inline;">
+        <form id="logout-form" th:action="@{/logout}" method="post" style="display: inline;">
             <button type="submit" class="btn-logout">Logout</button>
         </form>
     </div>
@@ -137,6 +216,29 @@
 <div class="content">
     <h2 th:text="'Bem-vindo, ' + ${username} + '!'">Bem-vindo!</h2>
 </div>
+
+<!-- Script para o dropdown de configurações -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const configBtn = document.getElementById('configBtn');
+        const configDropdown = document.getElementById('configDropdown');
+
+        // Toggle dropdown ao clicar no botão de configurações
+        configBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            configBtn.classList.toggle('active');
+            configDropdown.classList.toggle('show');
+        });
+
+        // Fechar dropdown ao clicar em qualquer lugar da página
+        document.addEventListener('click', function(e) {
+            if (!configBtn.contains(e.target) && !configDropdown.contains(e.target)) {
+                configBtn.classList.remove('active');
+                configDropdown.classList.remove('show');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
